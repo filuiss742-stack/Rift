@@ -1,0 +1,16 @@
+; Rift — game project
+; Engine: Godot 4.7.2 stable
+; Main language: GDScript
+
+config_version=5
+
+[application]
+config/name="Rift"
+config/description="Rift — 3D world with 2D characters"
+run/main_scene="res://scenes/main.tscn"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+environment/defaults/default_clear_color=Color(0.035, 0.045, 0.065, 1)
