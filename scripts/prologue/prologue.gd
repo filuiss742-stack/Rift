@@ -50,6 +50,8 @@ func _physics_process(delta: float) -> void:
 	else:
 		player.velocity.y = 0.0
 	player.move_and_slide()
+	if camera != null:
+		camera.global_position = player.global_position + Vector3(0, 8.5, 10.5)
 	_update_player_sprite(direction)
 	_update_nearby()
 
@@ -321,7 +323,7 @@ func _spawn_player(at: Vector3) -> void:
 	sprite_back = load("res://assets/sprites/lisa_idle_back.svg") as Texture2D
 	sprite_side = load("res://assets/sprites/lisa_idle_side.svg") as Texture2D
 	sprite.texture = sprite_front
-	sprite.pixel_size = 0.0062
+	sprite.pixel_size = 0.0044
 	sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 	sprite.position.y = 1.05
@@ -329,24 +331,30 @@ func _spawn_player(at: Vector3) -> void:
 	player.add_child(sprite)
 	add_child(player)
 	var camera_node := Camera3D.new()
-	camera_node.position = Vector3(0, 8.5, 10.5)
+	camera_node.position = player.global_position + Vector3(0, 8.5, 10.5)
 	camera_node.rotation_degrees = Vector3(-36, 0, 0)
 	camera_node.current = true
-	player.add_child(camera_node)
+	add_child(camera_node)
 	camera = camera_node
 
 func _update_player_sprite(direction: Vector3) -> void:
-	if player_sprite == null or direction.length_squared() < 0.02:
+	if player_sprite == null or camera == null or direction.length_squared() < 0.02:
 		return
-	if absf(direction.x) > absf(direction.z):
-		player_sprite.texture = sprite_side
-		player_sprite.flip_h = direction.x < 0.0
-	elif direction.z < 0.0:
+	var facing := Vector2(direction.x, direction.z).normalized()
+	var camera_from_character := Vector2(
+		camera.global_position.x - player.global_position.x,
+		camera.global_position.z - player.global_position.z
+	).normalized()
+	var camera_dot_facing := facing.dot(camera_from_character)
+	if camera_dot_facing > 0.45:
+		player_sprite.texture = sprite_front
+		player_sprite.flip_h = false
+	elif camera_dot_facing < -0.45:
 		player_sprite.texture = sprite_back
 		player_sprite.flip_h = false
 	else:
-		player_sprite.texture = sprite_front
-		player_sprite.flip_h = false
+		player_sprite.texture = sprite_side
+		player_sprite.flip_h = facing.cross(camera_from_character) < 0.0
 
 func _box(label: String, at: Vector3, size: Vector3, color: Color, solid: bool, texture_path: String = "") -> void:
 	var mesh_node := MeshInstance3D.new()
