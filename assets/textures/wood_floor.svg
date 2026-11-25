@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<defs><linearGradient id="wood" x2="0" y2="1"><stop stop-color="#80604a"/><stop offset=".48" stop-color="#684b3b"/><stop offset="1" stop-color="#50382e"/></linearGradient><pattern id="grain" width="96" height="64" patternUnits="userSpaceOnUse"><path d="M0 13 C24 8 38 19 60 13 S85 8 96 12 M0 43 C25 38 48 49 72 42 S88 40 96 43" fill="none" stroke="#b18a69" stroke-opacity=".24" stroke-width="2"/><path d="M14 0 Q22 18 12 35 T18 64 M74 0 Q65 18 78 35 T70 64" fill="none" stroke="#38271f" stroke-opacity=".22" stroke-width="1.5"/></pattern></defs>
+<rect width="512" height="512" fill="#39291f"/>
+<g fill="url(#wood)" stroke="#39291f" stroke-width="5">
+<rect x="0" y="0" width="170" height="126"/><rect x="174" y="0" width="166" height="126"/><rect x="344" y="0" width="168" height="126"/>
+<rect x="0" y="130" width="112" height="126"/><rect x="116" y="130" width="224" height="126"/><rect x="344" y="130" width="168" height="126"/>
+<rect x="0" y="260" width="170" height="126"/><rect x="174" y="260" width="166" height="126"/><rect x="344" y="260" width="168" height="126"/>
+<rect x="0" y="390" width="112" height="122"/><rect x="116" y="390" width="224" height="122"/><rect x="344" y="390" width="168" height="122"/>
+</g><rect width="512" height="512" fill="url(#grain)"/>
+<g stroke="#d0a27b" stroke-opacity=".12" stroke-width="2"><path d="M5 8V120M180 8V120M350 8V120M5 138V250M120 138V250M350 138V250M5 268V380M180 268V380M350 268V380M5 398V506M120 398V506M350 398V506"/></g>
+</svg>
