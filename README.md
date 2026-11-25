@@ -20,7 +20,7 @@ A story-driven action game built with **Godot 4.7.2 (stable)**.
 
 Official download: https://godotengine.org/download/archive/4.7.2-stable/
 
-## Structure
+## Playable prologue draft\n\nThe current entry scene runs the opening void, Lisa's modern bedroom exploration, and the first awakening in the fantasy world. Controls: WASD or the on-screen directional pad; E/Space or the interaction button to inspect nearby objects. See [the prologue notes](docs/story/PROLOGUE.md) for canon and known limitations.\n\n## Structure
 
 - `scenes/` — Godot scenes.
 - `scripts/` — GDScript gameplay and systems.
