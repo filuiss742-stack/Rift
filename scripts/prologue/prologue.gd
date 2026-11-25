@@ -15,6 +15,14 @@ var story_button: Button
 var prompt_label: Label
 var interact_button: Button
 var touch_vector := Vector2.ZERO
+var touch_up := false
+var touch_down := false
+var touch_left := false
+var touch_right := false
+var player_sprite: Sprite3D
+var sprite_front: Texture2D
+var sprite_back: Texture2D
+var sprite_side: Texture2D
 var nearby: Area3D
 var inspected := {}
 var current_phase := "void"
@@ -42,6 +50,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		player.velocity.y = 0.0
 	player.move_and_slide()
+	_update_player_sprite(direction)
 	_update_nearby()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -86,7 +95,7 @@ func _build_ui() -> void:
 	column.add_child(story_label)
 	story_button = Button.new()
 	story_button.custom_minimum_size = Vector2(0, 48)
-	story_button.text = "Продолжить"
+	story_button.text = "▶"
 	story_button.pressed.connect(_advance_story)
 	column.add_child(story_button)
 
@@ -100,11 +109,15 @@ func _build_ui() -> void:
 	root.add_child(prompt_label)
 
 	interact_button = Button.new()
-	interact_button.text = "Осмотреть / взаимодействовать"
-	interact_button.anchor_left = 0.62
-	interact_button.anchor_right = 0.97
-	interact_button.anchor_top = 0.84
-	interact_button.anchor_bottom = 0.94
+	interact_button.text = "✦"
+	interact_button.tooltip_text = "Взаимодействовать"
+	interact_button.custom_minimum_size = Vector2(76, 76)
+	interact_button.anchor_left = 0.82
+	interact_button.anchor_right = 0.98
+	interact_button.anchor_top = 0.79
+	interact_button.anchor_bottom = 0.97
+	interact_button.add_theme_font_size_override("font_size", 34)
+	_style_icon_button(interact_button, 38)
 	interact_button.pressed.connect(_interact)
 	root.add_child(interact_button)
 
@@ -118,11 +131,11 @@ func _build_ui() -> void:
 	pad.add_theme_constant_override("v_separation", 5)
 	root.add_child(pad)
 	_add_pad_spacer(pad)
-	_add_pad_button(pad, "↑", Vector2(0, -1))
+	_add_pad_button(pad, "▲", Vector2(0, -1))
 	_add_pad_spacer(pad)
-	_add_pad_button(pad, "←", Vector2(-1, 0))
-	_add_pad_button(pad, "↓", Vector2(0, 1))
-	_add_pad_button(pad, "→", Vector2(1, 0))
+	_add_pad_button(pad, "◀", Vector2(-1, 0))
+	_add_pad_button(pad, "▼", Vector2(0, 1))
+	_add_pad_button(pad, "▶", Vector2(1, 0))
 
 	_set_game_ui(false)
 
@@ -134,13 +147,49 @@ func _add_pad_spacer(parent: GridContainer) -> void:
 func _add_pad_button(parent: GridContainer, caption: String, axis: Vector2) -> void:
 	var button := Button.new()
 	button.text = caption
-	button.custom_minimum_size = Vector2(48, 42)
-	button.button_down.connect(func() -> void: touch_vector = axis)
-	button.button_up.connect(func() -> void:
-		if touch_vector == axis:
-			touch_vector = Vector2.ZERO
-	)
+	button.tooltip_text = "Движение"
+	button.custom_minimum_size = Vector2(58, 54)
+	button.add_theme_font_size_override("font_size", 27)
+	_style_icon_button(button, 29)
+	button.button_down.connect(_set_touch_direction.bind(axis, true))
+	button.button_up.connect(_set_touch_direction.bind(axis, false))
 	parent.add_child(button)
+
+func _style_icon_button(button: Button, font_size: int) -> void:
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color(0.055, 0.075, 0.11, 0.82)
+	normal.border_color = Color(0.72, 0.76, 0.86, 0.62)
+	normal.set_border_width_all(2)
+	normal.set_corner_radius_all(22)
+	normal.shadow_color = Color(0, 0, 0, 0.28)
+	normal.shadow_size = 5
+	button.add_theme_stylebox_override("normal", normal)
+	var pressed := normal.duplicate() as StyleBoxFlat
+	pressed.bg_color = Color(0.34, 0.19, 0.29, 0.94)
+	pressed.border_color = Color(1.0, 0.66, 0.75, 0.95)
+	button.add_theme_stylebox_override("pressed", pressed)
+	var hover := normal.duplicate() as StyleBoxFlat
+	hover.bg_color = Color(0.14, 0.17, 0.24, 0.94)
+	button.add_theme_stylebox_override("hover", hover)
+	button.add_theme_color_override("font_color", Color(0.98, 0.95, 0.93))
+	button.add_theme_color_override("font_pressed_color", Color(1.0, 0.78, 0.82))
+	button.add_theme_font_size_override("font_size", font_size)
+
+func _set_touch_direction(axis: Vector2, pressed: bool) -> void:
+	if axis.y < 0.0:
+		touch_up = pressed
+	elif axis.y > 0.0:
+		touch_down = pressed
+	elif axis.x < 0.0:
+		touch_left = pressed
+	elif axis.x > 0.0:
+		touch_right = pressed
+	touch_vector = Vector2(
+		float(touch_right) - float(touch_left),
+		float(touch_down) - float(touch_up)
+	)
+	if touch_vector.length() > 1.0:
+		touch_vector = touch_vector.normalized()
 
 func _set_game_ui(enabled: bool) -> void:
 	story_panel.visible = not enabled
@@ -237,17 +286,17 @@ func _build_room() -> void:
 	sun.light_energy = 1.0
 	add_child(sun)
 
-	_box("Floor", Vector3(0, -0.2, 0), Vector3(12, 0.4, 12), Color(0.34, 0.29, 0.27), true)
-	_box("Back wall", Vector3(0, 2.0, -6), Vector3(12, 4, 0.25), Color(0.72, 0.68, 0.62), true)
-	_box("Left wall", Vector3(-6, 2.0, 0), Vector3(0.25, 4, 12), Color(0.62, 0.65, 0.68), true)
-	_box("Right wall", Vector3(6, 2.0, 0), Vector3(0.25, 4, 12), Color(0.62, 0.65, 0.68), true)
+	_box("Floor", Vector3(0, -0.2, 0), Vector3(12, 0.4, 12), Color.WHITE, true, "res://assets/textures/wood_floor.svg")
+	_box("Back wall", Vector3(0, 2.0, -6), Vector3(12, 4, 0.25), Color.WHITE, true, "res://assets/textures/wallpaper.svg")
+	_box("Left wall", Vector3(-6, 2.0, 0), Vector3(0.25, 4, 12), Color.WHITE, true, "res://assets/textures/wallpaper.svg")
+	_box("Right wall", Vector3(6, 2.0, 0), Vector3(0.25, 4, 12), Color.WHITE, true, "res://assets/textures/wallpaper.svg")
 	_box("Window glow", Vector3(0, 2.5, -5.82), Vector3(2.8, 1.8, 0.04), Color(0.24, 0.42, 0.58), false)
 	_box("Bed base", Vector3(-3.4, 0.35, -3.3), Vector3(2.5, 0.7, 3.2), Color(0.22, 0.19, 0.2), true)
 	_box("Bed blanket", Vector3(-3.4, 0.76, -3.3), Vector3(2.45, 0.12, 3.1), Color(0.38, 0.42, 0.52), false)
 	_box("Desk", Vector3(3.4, 0.85, -3.7), Vector3(2.7, 0.15, 1.2), Color(0.30, 0.20, 0.14), true)
 	_box("Desk legs", Vector3(3.4, 0.4, -3.7), Vector3(2.45, 0.8, 0.12), Color(0.22, 0.15, 0.11), true)
 	_box("Wardrobe", Vector3(4.9, 1.25, 1.8), Vector3(1.4, 2.5, 1.2), Color(0.25, 0.19, 0.17), true)
-	_box("Rug", Vector3(0, 0.015, 1.2), Vector3(4.0, 0.03, 3.0), Color(0.32, 0.24, 0.25), false)
+	_box("Rug", Vector3(0, 0.015, 1.2), Vector3(4.0, 0.03, 3.0), Color.WHITE, false, "res://assets/textures/rug.svg")
 
 	_add_interactable("Phone", "Телефон", Vector3(3.2, 1.12, -3.7), "На экране несколько обычных уведомлений. Ничего необычного. Мир продолжает жить своей жизнью.", "phone")
 	_add_interactable("Mirror", "Зеркало", Vector3(5.2, 1.4, -0.3), "В отражении — уставшая девушка. На мгновение кажется, что отражение моргнуло чуть позже. Наверное, показалось.", "mirror")
@@ -267,11 +316,16 @@ func _spawn_player(at: Vector3) -> void:
 	collision.position.y = 0.78
 	player.add_child(collision)
 	var sprite := Sprite3D.new()
-	sprite.name = "TEMP_REPLACE_WITH_APPROVED_2D_SPRITES"
-	sprite.texture = _make_placeholder_texture()
-	sprite.pixel_size = 0.018
-	sprite.billboard = BaseMaterial3D.BILLBOARD_DISABLED
-	sprite.position.y = 0.95
+	sprite.name = "LisaDirectional2DSprite"
+	sprite_front = load("res://assets/sprites/lisa_idle_front.svg") as Texture2D
+	sprite_back = load("res://assets/sprites/lisa_idle_back.svg") as Texture2D
+	sprite_side = load("res://assets/sprites/lisa_idle_side.svg") as Texture2D
+	sprite.texture = sprite_front
+	sprite.pixel_size = 0.0062
+	sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
+	sprite.position.y = 1.05
+	player_sprite = sprite
 	player.add_child(sprite)
 	add_child(player)
 	var camera_node := Camera3D.new()
@@ -281,21 +335,20 @@ func _spawn_player(at: Vector3) -> void:
 	player.add_child(camera_node)
 	camera = camera_node
 
-func _make_placeholder_texture() -> Texture2D:
-	var image := Image.create(48, 80, false, Image.FORMAT_RGBA8)
-	image.fill(Color(0, 0, 0, 0))
-	for y in range(8, 78):
-		for x in range(5, 44):
-			var dx := float(x - 24)
-			var inside_head := y < 29 and dx * dx + pow(float(y - 18), 2.0) < 105.0
-			var inside_body := y >= 28 and y < 70 and absf(dx) < (10.0 if y < 56 else 16.0)
-			var inside_hair := y < 37 and absf(dx) < (13.0 if y < 28 else 18.0)
-			if inside_head or inside_body or inside_hair:
-				image.set_pixel(x, y, Color(0.12, 0.10, 0.15, 1))
-	var texture := ImageTexture.create_from_image(image)
-	return texture
+func _update_player_sprite(direction: Vector3) -> void:
+	if player_sprite == null or direction.length_squared() < 0.02:
+		return
+	if absf(direction.x) > absf(direction.z):
+		player_sprite.texture = sprite_side
+		player_sprite.flip_h = direction.x < 0.0
+	elif direction.z < 0.0:
+		player_sprite.texture = sprite_back
+		player_sprite.flip_h = false
+	else:
+		player_sprite.texture = sprite_front
+		player_sprite.flip_h = false
 
-func _box(label: String, at: Vector3, size: Vector3, color: Color, solid: bool) -> void:
+func _box(label: String, at: Vector3, size: Vector3, color: Color, solid: bool, texture_path: String = "") -> void:
 	var mesh_node := MeshInstance3D.new()
 	mesh_node.name = label
 	var mesh := BoxMesh.new()
@@ -303,6 +356,9 @@ func _box(label: String, at: Vector3, size: Vector3, color: Color, solid: bool) 
 	var material := StandardMaterial3D.new()
 	material.albedo_color = color
 	material.roughness = 0.9
+	if not texture_path.is_empty() and ResourceLoader.exists(texture_path):
+		material.albedo_texture = load(texture_path) as Texture2D
+		material.uv1_scale = Vector3(2.0, 2.0, 1.0)
 	mesh.material = material
 	mesh_node.mesh = mesh
 	mesh_node.position = at
@@ -405,11 +461,11 @@ func _build_fantasy_world() -> void:
 	moon.light_color = Color(0.52, 0.62, 0.88)
 	moon.light_energy = 0.45
 	add_child(moon)
-	_box("Ashen ground", Vector3(0, -0.2, 0), Vector3(34, 0.4, 34), Color(0.19, 0.20, 0.22), true)
+	_box("Ashen ground", Vector3(0, -0.2, 0), Vector3(34, 0.4, 34), Color.WHITE, true, "res://assets/textures/ashen_ground.svg")
 	for i in range(7):
 		var x := -10.0 + float(i) * 3.2
-		_box("Broken ruin %d" % i, Vector3(x, 1.3 + float(i % 2) * 0.4, -7.5), Vector3(1.0, 2.6 + float(i % 2), 1.0), Color(0.28, 0.29, 0.31), true)
-	_box("Fallen pillar", Vector3(5, 0.35, -1), Vector3(5, 0.55, 0.8), Color(0.30, 0.30, 0.32), true)
+		_box("Broken ruin %d" % i, Vector3(x, 1.3 + float(i % 2) * 0.4, -7.5), Vector3(1.0, 2.6 + float(i % 2), 1.0), Color.WHITE, true, "res://assets/textures/stone_ruins.svg")
+	_box("Fallen pillar", Vector3(5, 0.35, -1), Vector3(5, 0.55, 0.8), Color.WHITE, true, "res://assets/textures/stone_ruins.svg")
 	var rift_light := OmniLight3D.new()
 	rift_light.position = Vector3(-5, 2, -5)
 	rift_light.light_color = Color(0.75, 0.08, 0.16)
@@ -437,7 +493,7 @@ func _show_lines(lines: Array[String], after: Callable) -> void:
 	dialogue_action = after
 	story_panel.visible = true
 	story_button.visible = true
-	story_button.text = "Продолжить"
+	story_button.text = "▶"
 	story_label.text = dialogue_lines[0] if not dialogue_lines.is_empty() else ""
 	controls_enabled = false
 	interact_button.visible = false
