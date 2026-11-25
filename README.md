@@ -11,6 +11,18 @@ A story-driven action game built with **Godot 4.7.2 (stable)**.
 - Narrative dialogue with choices and persistent consequences.
 - A separate strategy/RTS mode later in the project.
 
+## Playable prologue draft
+
+The current entry scene runs the opening void, Lisa's modern bedroom exploration, and the first awakening in the fantasy world.
+
+- Desktop: WASD to move; E or Space to interact.
+- Android layout: four directional icon buttons and a separate interaction icon.
+- See [prologue notes](docs/story/PROLOGUE.md) and [art asset notes](docs/ART_ASSETS.md).
+
+## First art pass
+
+The first authored art pass includes repeating SVG materials for the bedroom floor, wallpaper, rug, ruined masonry and ash ground, plus individual Lisa front/back/side idle sprite images. These are editable source files, not flattened multi-pose sheets.
+
 ## Open the project
 
 1. Install Godot **4.7.2 Standard** (not .NET; the project uses GDScript).
@@ -20,7 +32,7 @@ A story-driven action game built with **Godot 4.7.2 (stable)**.
 
 Official download: https://godotengine.org/download/archive/4.7.2-stable/
 
-## Playable prologue draft\n\nThe current entry scene runs the opening void, Lisa's modern bedroom exploration, and the first awakening in the fantasy world. Controls: WASD or the on-screen directional pad; E/Space or the interaction button to inspect nearby objects. See [the prologue notes](docs/story/PROLOGUE.md) for canon and known limitations.\n\n## Structure
+## Structure
 
 - `scenes/` — Godot scenes.
 - `scripts/` — GDScript gameplay and systems.
@@ -31,4 +43,4 @@ Keep gameplay systems small and explicit. Prefer composition over giant manager 
 
 ## Validation
 
-GitHub Actions runs Godot headless import and project startup checks on pushes and pull requests.
+GitHub Actions runs Godot headless import and project startup checks on pushes and pull requests. Android and Windows export builds and real-device testing are not configured yet.
