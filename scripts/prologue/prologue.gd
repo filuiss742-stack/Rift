@@ -162,6 +162,10 @@ func _show_void() -> void:
 	env.ambient_light_color = Color(0.12, 0.08, 0.12)
 	environment.environment = env
 	add_child(environment)
+	var void_camera := Camera3D.new()
+	void_camera.position = Vector3(0, 0, 8)
+	void_camera.current = true
+	add_child(void_camera)
 	var light := OmniLight3D.new()
 	light.position = Vector3(0, 2, 0)
 	light.light_color = Color(1.0, 0.08, 0.12)
@@ -329,8 +333,6 @@ func _add_interactable(node_name: String, label: String, at: Vector3, text: Stri
 func _update_nearby() -> void:
 	nearby = null
 	var best := INTERACT_DISTANCE
-	for candidate in get_tree().get_nodes_in_group("unused"):
-		pass
 	for candidate in get_children():
 		if candidate is Area3D and candidate.has_meta("story_key"):
 			var distance := player.global_position.distance_to(candidate.global_position)
