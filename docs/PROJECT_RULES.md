@@ -13,10 +13,10 @@
 - Do not build a custom engine on top of Godot.
 
 ## Art pipeline
-- Generate and review each sprite pose/frame as a separate image.
-- Assemble approved frames into sprite sheets/atlases only after inspection.
-- Keep source images; generated atlases must be reproducible.
-- Directional character art should support the agreed eight viewing directions.
+- Create and review every sprite pose/frame as a separate image file. Never ask an image model to draw several poses in one sheet.
+- Hand-authored SVG is an approved fallback when image generation is unavailable; keep every direction/pose in its own SVG/PNG source file.
+- Assemble approved frames into sprite sheets/atlases only after inspection. Keep source images; generated atlases must be reproducible.
+- Directional character art should ultimately support eight viewing directions. The first Lisa idle set currently provides front, back and side views; diagonal views and animation frames remain to be made.
 
 ## Quality
 - Never silently swallow errors.
