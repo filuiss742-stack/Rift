@@ -1,0 +1,44 @@
+name: Install integrated Rift project
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [setup/godot-4.7.2]
+    paths: [.github/workflows/install-integrated-project.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout working branch
+        uses: actions/checkout@v4
+        with:
+          ref: setup/godot-4.7.2
+          fetch-depth: 0
+
+      - name: Extract integrated project
+        run: |
+          set -euo pipefail
+          test -f Rift_Integrated_Claude_Base.zip
+          mkdir -p /tmp/rift-archive
+          unzip -q Rift_Integrated_Claude_Base.zip -d /tmp/rift-archive
+          test -d /tmp/rift-archive/Rift
+          rsync -a --delete --exclude='.git/' --exclude='.github/' --exclude='Rift_Integrated_Claude_Base.zip' /tmp/rift-archive/Rift/ ./
+          echo "Extracted project files:"
+          find . -maxdepth 3 -type f | sort | head -200
+
+      - name: Commit extracted project
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No project changes to commit."
+            exit 0
+          fi
+          git commit -m "Install integrated Claude Rift project"
+          git push origin HEAD:setup/godot-4.7.2
