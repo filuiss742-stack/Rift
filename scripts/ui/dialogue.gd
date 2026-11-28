@@ -39,7 +39,7 @@ func _ready() -> void:
 	Ui.rect(panel, Vector2(90, 510), Vector2(1100, 180), Color(0.05, 0.03, 0.09, 0.93))
 	Ui.rect(panel, Vector2(90, 510), Vector2(1100, 3), Color(0.85, 0.15, 0.3, 1.0))
 	who_label = Ui.label(panel, "", Vector2(120, 522), Vector2(700, 34), 24, Color(1.0, 0.55, 0.65))
-	text_label = Ui.label(panel, "", Vector2(120, 562), Vector2(1040, 100), 21)
+	text_label = Ui.label(panel, "", Vector2(120, 562), Vector2(1040, 78), 21)
 	next_button = Ui.button(panel, "Далее", Vector2(900, 650), Vector2(130, 44), 18)
 	next_button.pressed.connect(_advance)
 	skip_button = Ui.button(panel, "Пропустить", Vector2(1040, 650), Vector2(150, 44), 18)
