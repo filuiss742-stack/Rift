@@ -2,6 +2,9 @@ name: Install integrated Rift project
 
 on:
   workflow_dispatch:
+  push:
+    branches: [setup/godot-4.7.2]
+    paths: [.github/workflows/install-integrated-project.yml]
 
 permissions:
   contents: write
