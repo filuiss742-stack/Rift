@@ -43,7 +43,7 @@ func setup(owner_level) -> void:
 	level = owner_level
 	var data = level.data
 	var sprite_name = "liza" if data.get("world", "") == "earth" else "mira"
-	build_body(sprite_name, 0.4, 0.043)
+	build_body(sprite_name, 0.4, 0.0043)
 	if data.get("world", "") == "earth":
 		set_directional_textures(
 			"res://assets/sprites/lisa_idle_front.svg",
