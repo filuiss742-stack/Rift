@@ -26,7 +26,7 @@ jobs:
           mkdir -p /tmp/rift-archive
           unzip -q Rift_Integrated_Claude_Base.zip -d /tmp/rift-archive
           test -d /tmp/rift-archive/Rift
-          rsync -a --delete --exclude='.github/' --exclude='Rift_Integrated_Claude_Base.zip' /tmp/rift-archive/Rift/ ./
+          rsync -a --delete --exclude='.git/' --exclude='.github/' --exclude='Rift_Integrated_Claude_Base.zip' /tmp/rift-archive/Rift/ ./
           echo "Extracted project files:"
           find . -maxdepth 3 -type f | sort | head -200
 
