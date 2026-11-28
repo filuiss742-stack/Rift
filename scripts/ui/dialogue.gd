@@ -20,6 +20,8 @@ var backdrop: ColorRect = null
 var crack_image: TextureRect = null
 var who_label: Label = null
 var text_label: Label = null
+var next_button: Button = null
+var skip_button: Button = null
 
 func _ready() -> void:
 	layer = 10
@@ -38,7 +40,10 @@ func _ready() -> void:
 	Ui.rect(panel, Vector2(90, 510), Vector2(1100, 3), Color(0.85, 0.15, 0.3, 1.0))
 	who_label = Ui.label(panel, "", Vector2(120, 522), Vector2(700, 34), 24, Color(1.0, 0.55, 0.65))
 	text_label = Ui.label(panel, "", Vector2(120, 562), Vector2(1040, 100), 21)
-	Ui.label(panel, "F / клик — дальше", Vector2(980, 660), Vector2(200, 24), 14, Color(0.7, 0.7, 0.8))
+	next_button = Ui.button(panel, "Далее", Vector2(900, 650), Vector2(130, 44), 18)
+	next_button.pressed.connect(_advance)
+	skip_button = Ui.button(panel, "Пропустить", Vector2(1040, 650), Vector2(150, 44), 18)
+	skip_button.pressed.connect(_skip)
 	panel.visible = false
 
 func play_id(dialogue_id: String, done: Callable = Callable()) -> void:
@@ -93,6 +98,14 @@ func _advance() -> void:
 	if index < lines.size():
 		_show_line()
 		return
+	_finish()
+
+func _skip() -> void:
+	if not active:
+		return
+	_finish()
+
+func _finish() -> void:
 	active = false
 	panel.visible = false
 	get_tree().paused = false
