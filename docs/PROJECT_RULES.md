@@ -1,25 +1,33 @@
 # Rift project rules
 
 ## Engine baseline
-- Pin the project to Godot 4.7.2 stable until an intentional upgrade is reviewed.
-- Use standard Godot with GDScript; do not introduce the .NET runtime without a concrete need.
-- Use the Compatibility renderer as the initial mobile-friendly baseline. Validate visual quality and performance on target hardware before changing renderers.
+- Godot 4.7.2 Standard, GDScript only; no .NET dependency.
+- Compatibility renderer is the baseline for Android.
+- Do not replace the engine with a custom framework.
 
-## Game architecture
-- The world is 3D. Characters, monsters and selected entities are 2D sprites/billboards.
-- Keep gameplay logic independent from presentation where practical.
-- Use small scenes and focused scripts. Avoid global manager singletons unless there is a documented need.
-- Prefer typed GDScript, explicit signals and clear ownership of scene nodes.
-- Do not build a custom engine on top of Godot.
+## Architecture
+- 3D environments, buildings, props, lighting and collision.
+- 2D character, monster and selected entity sprites/billboards.
+- Gameplay data and story text stay in `data/*.json` where practical.
+- Keep the current folder structure. Do not rewrite the project or remove systems without explicit approval.
+- Autoload name is `Game`. Scripts are connected with `preload()`.
+
+## Coding rules
+- Godot 4 GDScript only.
+- Tabs for indentation.
+- Do not use `:=` or `class_name`.
+- Read all related files before changing a system.
+- Return complete changed files with `res://` paths; no ellipses, TODOs or omitted sections.
+- Never claim the game was run unless a Godot runtime test actually completed.
 
 ## Art pipeline
-- Create and review every sprite pose/frame as a separate image file. Never ask an image model to draw several poses in one sheet.
-- Hand-authored SVG is an approved fallback when image generation is unavailable; keep every direction/pose in its own SVG/PNG source file.
-- Assemble approved frames into sprite sheets/atlases only after inspection. Keep source images; generated atlases must be reproducible.
-- Directional character art should ultimately support eight viewing directions. The first Lisa idle set currently provides front, back and side views; diagonal views and animation frames remain to be made.
+- Create and inspect one sprite pose/frame at a time, then assemble approved frames into atlases.
+- Keep each direction/pose as an individual source asset.
+- Current Lisa idle set has front, back and side views; it is not a finished eight-direction animation set.
+- SVG source art is editable and is a placeholder, not final production art.
 
 ## Quality
-- Never silently swallow errors.
-- Distinguish confirmed defects from hypotheses in bug reports.
-- Add a reproducible test or validation step for each important gameplay system.
-- Do not claim Android/Windows builds or device performance are verified until they have actually been tested.
+- Distinguish confirmed defects from hypotheses.
+- Fix the cause shown by the error rather than guessing.
+- Add reproducible checks for important systems.
+- Android and Windows builds/device performance are not verified until tested on target devices.

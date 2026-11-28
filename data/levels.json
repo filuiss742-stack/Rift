@@ -1,0 +1,124 @@
+{
+  "earth_room": {
+    "title": "Пролог. Комната Лизы", "world": "earth", "size": [14, 11], "start": [0, 2],
+    "sky": "#080a14", "ground": "#6b5444", "ambient": "#8890b8", "sun_energy": 0.45, "sun_color": "#aabcff", "patches": 0,
+    "intro": "room_intro", "next": "village",
+    "objective": "Прочитай дневник на столе, потом ложись спать.",
+    "buildings": [
+      {"kind": "wall", "pos": [0, -5.2], "size": [14, 2.2, 0.4], "color": "#7d7f9c"},
+      {"kind": "wall", "pos": [-6.8, 0], "size": [0.4, 1.4, 10], "color": "#6f718c"},
+      {"kind": "wall", "pos": [6.8, 0], "size": [0.4, 1.4, 10], "color": "#6f718c"},
+      {"kind": "box", "pos": [3.8, -3.8], "size": [2.6, 0.8, 1.2], "color": "#8a6448"},
+      {"kind": "box", "pos": [-1.0, -4.5], "size": [1.8, 2.4, 0.8], "color": "#5c4436"},
+      {"kind": "box", "pos": [0, 0.2], "size": [3.4, 0.03, 2.4], "color": "#7a3550", "solid": false}
+    ],
+    "props": [
+      {"sprite": "lantern", "pos": [5.7, -3.4], "pixel": 0.04, "light": "#ffcf88"}
+    ],
+    "interactables": [
+      {"id": "diary", "sprite": "diary", "pos": [3.4, -2.4], "pixel": 0.04, "label": "Дневник", "label_height": 1.5, "prompt": "прочитать дневник", "dialogue": "diary_first"},
+      {"id": "bed", "sprite": "bed", "pos": [-4.3, -2.6], "pixel": 0.065, "label": "Кровать", "prompt": "лечь спать", "locked": "Сначала дневник: сны нужно записать.", "requires": ["diary"], "dialogue": "dream", "exit": true}
+    ]
+  },
+  "village": {
+    "title": "Глава 1. Пепельный Приют", "world": "mira", "size": [44, 30], "start": [-16, 3],
+    "sky": "#2a1626", "ground": "#53454a", "ambient": "#a08894", "patches": 90, "grass": 70,
+    "intro": "village_wake", "clear_dialogue": "village_clear", "next": "earth_morning",
+    "objective": "Отбей нападение на Приют.", "objective_after": "Поговори с Реном, затем отдохни у костра.",
+    "waves": [
+      [{"type": "husk", "pos": [2, 0]}, {"type": "husk", "pos": [4, 4]}, {"type": "husk", "pos": [3, -4]}],
+      [{"type": "husk", "pos": [10, 2]}, {"type": "husk", "pos": [9, -5]}, {"type": "husk", "pos": [-2, 9]}, {"type": "spitter", "pos": [15, 5]}, {"type": "spitter", "pos": [14, -7]}],
+      [{"type": "brute", "pos": [16, 0]}, {"type": "husk", "pos": [8, 8]}, {"type": "husk", "pos": [7, -6]}, {"type": "spitter", "pos": [18, -3]}]
+    ],
+    "buildings": [
+      {"kind": "house", "pos": [-13, -7], "size": [5, 2.8, 4], "color": "#9a8374", "roof": "#6a2e3a"},
+      {"kind": "ruin", "pos": [-3, -9], "size": [5, 3, 4], "color": "#7b7078", "roof": "#3c2a2a"},
+      {"kind": "ruin", "pos": [8, -10], "size": [4, 2.6, 3.5], "color": "#746a70", "roof": "#3c2a2a"},
+      {"kind": "tower", "pos": [18, -11], "size": [3, 5, 3], "color": "#6e6874", "roof": "#4a2034"},
+      {"kind": "ruin", "pos": [12, 9], "size": [5.5, 3, 4], "color": "#7b7078", "roof": "#3c2a2a"},
+      {"kind": "house", "pos": [-12, 10], "size": [4.5, 2.4, 3.5], "color": "#8e786a", "roof": "#4c3a52"},
+      {"kind": "tent", "pos": [-19, -2], "size": [3, 2.4, 3], "color": "#8c6a56"},
+      {"kind": "wall", "pos": [1, 12.5], "size": [8, 1.6, 0.6], "color": "#6a626c"}
+    ],
+    "props": [
+      {"sprite": "tree_dead", "pos": [-6, 6], "solid": 0.6}, {"sprite": "tree_dead", "pos": [6, -3], "solid": 0.6},
+      {"sprite": "tree_dead", "pos": [19, 8], "pixel": 0.06, "solid": 0.8}, {"sprite": "tree_dead", "pos": [-20, -12], "solid": 0.6},
+      {"sprite": "rock", "pos": [4, 7], "pixel": 0.05, "solid": 1.1}, {"sprite": "rock", "pos": [-8, -2], "solid": 0.9},
+      {"sprite": "bones", "pos": [7, 2]}, {"sprite": "bones", "pos": [-1, -3]},
+      {"sprite": "crack", "pos": [20, -1], "pixel": 0.07, "light": "#ff2255"},
+      {"sprite": "lantern", "pos": [-15, 0], "light": "#ffc070"}
+    ],
+    "interactables": [
+      {"id": "ren", "sprite": "ren", "frames": 4, "pos": [-14, -2], "pixel": 0.043, "label": "Рен", "prompt": "поговорить с Реном", "locked": "Сейчас не до разговоров!", "after_clear": true, "dialogue": "ren_talk"},
+      {"id": "iveta", "sprite": "iveta", "frames": 4, "pos": [-17, -5], "pixel": 0.043, "label": "Ивета", "prompt": "поговорить с Иветой", "locked": "Ивета прячется в укрытии.", "after_clear": true, "dialogue": "iveta_talk"},
+      {"id": "fire", "sprite": "campfire", "pos": [-17, 2], "label": "Костёр", "label_height": 1.7, "prompt": "отдохнуть и уснуть", "locked": "Рен ждёт объяснений.", "after_clear": true, "requires": ["ren"], "rest": true, "dialogue": "village_sleep", "exit": true}
+    ]
+  },
+  "earth_morning": {
+    "title": "Интерлюдия. Чужой почерк", "world": "earth", "size": [14, 11], "start": [-3, -1],
+    "sky": "#5a7090", "ground": "#6b5444", "ambient": "#c8cce0", "sun_energy": 1.0, "patches": 0,
+    "intro": "morning", "next": "grove",
+    "objective": "Проверь зеркало и дневник. Потом попробуй уснуть снова.",
+    "buildings": [
+      {"kind": "wall", "pos": [0, -5.2], "size": [14, 2.2, 0.4], "color": "#a9abc4"},
+      {"kind": "wall", "pos": [-6.8, 0], "size": [0.4, 1.4, 10], "color": "#9799b2"},
+      {"kind": "wall", "pos": [6.8, 0], "size": [0.4, 1.4, 10], "color": "#9799b2"},
+      {"kind": "box", "pos": [3.8, -3.8], "size": [2.6, 0.8, 1.2], "color": "#8a6448"},
+      {"kind": "box", "pos": [-1.0, -4.8], "size": [1.4, 2.0, 0.2], "color": "#bfe4f2"},
+      {"kind": "box", "pos": [0, 0.2], "size": [3.4, 0.03, 2.4], "color": "#7a3550", "solid": false}
+    ],
+    "props": [],
+    "interactables": [
+      {"id": "mirror", "sprite": "echo", "pos": [-1.0, -3.9], "pixel": 0.02, "label": "Зеркало", "prompt": "посмотреть в зеркало", "dialogue": "mirror"},
+      {"id": "diary", "sprite": "diary", "pos": [3.4, -2.4], "pixel": 0.04, "label": "Дневник", "label_height": 1.5, "prompt": "открыть дневник", "dialogue": "diary_second"},
+      {"id": "bed", "sprite": "bed", "pos": [-4.3, -2.6], "pixel": 0.065, "label": "Кровать", "prompt": "уснуть", "locked": "Сначала нужно понять, что произошло ночью.", "requires": ["mirror", "diary"], "dialogue": "sleep_again", "exit": true}
+    ]
+  },
+  "grove": {
+    "title": "Глава 2. Кровавая роща", "world": "mira", "size": [50, 32], "start": [-21, 0],
+    "sky": "#38101c", "ground": "#4c3340", "ambient": "#a87888", "sun_color": "#ffb0a0", "patches": 110, "grass": 120,
+    "intro": "grove_wake", "clear_dialogue": "tea_awaken", "grant_flag": "tea_awakened", "next": "rift",
+    "objective": "Пробейся через рощу.", "objective_after": "Войди в трещину на востоке.",
+    "waves": [
+      [{"type": "husk", "pos": [-9, 3]}, {"type": "husk", "pos": [-8, -4]}, {"type": "husk", "pos": [-6, 0]}, {"type": "husk", "pos": [-10, 7]}, {"type": "spitter", "pos": [-3, -7]}, {"type": "spitter", "pos": [-2, 8]}],
+      [{"type": "brute", "pos": [5, -4]}, {"type": "brute", "pos": [6, 5]}, {"type": "spitter", "pos": [11, -8]}, {"type": "spitter", "pos": [12, 8]}],
+      [{"type": "hunter", "pos": [16, 0]}, {"type": "husk", "pos": [13, -6]}, {"type": "husk", "pos": [13, 6]}]
+    ],
+    "buildings": [
+      {"kind": "ruin", "pos": [-12, -11], "size": [5, 3, 4], "color": "#6c5a64"},
+      {"kind": "obelisk", "pos": [2, -12], "size": [2, 4, 2], "color": "#3c2c3c", "roof": "#e0204a"},
+      {"kind": "obelisk", "pos": [2, 12], "size": [2, 4, 2], "color": "#3c2c3c", "roof": "#e0204a"},
+      {"kind": "ruin", "pos": [18, 11], "size": [4.5, 3, 3.5], "color": "#6c5a64"}
+    ],
+    "props": [
+      {"sprite": "tree_red", "pos": [-18, 8], "pixel": 0.065, "solid": 0.9}, {"sprite": "tree_red", "pos": [-15, -5], "pixel": 0.06, "solid": 0.8},
+      {"sprite": "tree_red", "pos": [-5, -12], "pixel": 0.07, "solid": 0.9}, {"sprite": "tree_red", "pos": [-1, 3], "pixel": 0.055, "solid": 0.7},
+      {"sprite": "tree_red", "pos": [8, -11], "pixel": 0.06, "solid": 0.8}, {"sprite": "tree_red", "pos": [9, 1], "pixel": 0.05, "solid": 0.7},
+      {"sprite": "tree_red", "pos": [-9, 12], "pixel": 0.065, "solid": 0.8}, {"sprite": "tree_red", "pos": [20, -9], "pixel": 0.07, "solid": 0.9},
+      {"sprite": "tree_dead", "pos": [15, 12], "solid": 0.6}, {"sprite": "rock", "pos": [-12, 2], "pixel": 0.05, "solid": 1.0},
+      {"sprite": "bones", "pos": [0, -6]}, {"sprite": "bones", "pos": [14, 3]}
+    ],
+    "interactables": [
+      {"id": "gate", "sprite": "crack", "pos": [22, 0], "pixel": 0.07, "label": "Трещина", "label_height": 5.0, "prompt": "шагнуть в трещину", "locked": "Что-то в роще держит трещину закрытой.", "after_clear": true, "dialogue": "grove_exit", "exit": true}
+    ]
+  },
+  "rift": {
+    "title": "Глава 3. Нулевая грань", "world": "mira", "size": [34, 28], "start": [0, 10],
+    "sky": "#0c0210", "ground": "#2e2236", "ambient": "#8c6ca8", "sun_color": "#d0b0ff", "patches": 60,
+    "intro": "rift_intro", "clear_dialogue": "rift_clear", "next": "rts",
+    "objective": "Победи Стража Трещины.", "objective_after": "Вернись через трещину.",
+    "waves": [[{"type": "warden", "pos": [0, -5]}]],
+    "buildings": [
+      {"kind": "obelisk", "pos": [-12, -9], "size": [2.2, 4.5, 2.2], "color": "#2a1c34", "roof": "#ff2a5c"},
+      {"kind": "obelisk", "pos": [12, -9], "size": [2.2, 4.5, 2.2], "color": "#2a1c34", "roof": "#ff2a5c"},
+      {"kind": "obelisk", "pos": [-12, 8], "size": [2.2, 4.5, 2.2], "color": "#2a1c34", "roof": "#f0f0ff"},
+      {"kind": "obelisk", "pos": [12, 8], "size": [2.2, 4.5, 2.2], "color": "#2a1c34", "roof": "#f0f0ff"}
+    ],
+    "props": [
+      {"sprite": "crack", "pos": [0, -12], "pixel": 0.1, "light": "#ff2255"}
+    ],
+    "interactables": [
+      {"id": "return", "sprite": "crack", "pos": [0, 12], "pixel": 0.055, "label": "Выход", "label_height": 4.0, "prompt": "вернуться в Приют", "locked": "Страж не отпускает.", "after_clear": true, "dialogue": "to_war", "exit": true}
+    ]
+  }
+}

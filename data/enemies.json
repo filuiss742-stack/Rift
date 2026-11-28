@@ -1,0 +1,7 @@
+{
+  "husk": {"title": "Пустая оболочка", "sprite": "husk", "pixel": 0.043, "radius": 0.4, "hp": 45, "speed": 3.2, "damage": 10, "xp": 12, "attack": "melee", "range": 1.6, "windup": 0.6, "cooldown": 1.1, "hit_radius": 1.2},
+  "spitter": {"title": "Плевун искажения", "sprite": "spitter", "pixel": 0.043, "radius": 0.4, "hp": 35, "speed": 2.6, "damage": 9, "xp": 15, "attack": "ranged", "range": 8.0, "windup": 0.7, "cooldown": 1.8, "shot_speed": 9.0},
+  "brute": {"title": "Громила", "sprite": "brute", "pixel": 0.056, "radius": 0.6, "hp": 130, "speed": 2.4, "damage": 20, "xp": 35, "attack": "charge", "range": 6.0, "windup": 0.85, "cooldown": 1.6, "charge_speed": 13.0, "charge_time": 0.45, "poise": true},
+  "hunter": {"title": "Алый ловчий", "sprite": "hunter", "pixel": 0.046, "radius": 0.65, "hp": 420, "speed": 4.2, "damage": 22, "xp": 120, "attack": "charge", "range": 7.0, "windup": 0.65, "cooldown": 0.9, "charge_speed": 16.0, "charge_time": 0.45, "poise": true},
+  "warden": {"title": "Страж Трещины", "sprite": "warden", "pixel": 0.048, "radius": 1.0, "hp": 1100, "speed": 2.2, "damage": 22, "xp": 300, "attack": "boss", "range": 4.0, "windup": 1.0, "cooldown": 1.6, "poise": true, "boss": true}
+}

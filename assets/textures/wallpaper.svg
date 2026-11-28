@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-<defs><pattern id="motif" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M32 8 C45 20 45 28 32 32 C19 28 19 20 32 8Z M32 56 C45 44 45 36 32 32 C19 36 19 44 32 56Z" fill="none" stroke="#b7a69b" stroke-width="1.5" opacity=".34"/><circle cx="32" cy="32" r="3" fill="#c9b6a7" opacity=".45"/></pattern><linearGradient id="paper" x2="0" y2="1"><stop stop-color="#d9cfc0"/><stop offset="1" stop-color="#b9aa9c"/></linearGradient></defs>
-<rect width="512" height="512" fill="url(#paper)"/><rect width="512" height="512" fill="url(#motif)"/>
-<path d="M0 0H512M0 256H512M256 0V512" stroke="#f2e9dc" stroke-opacity=".14" stroke-width="2"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><defs><pattern id="m" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M32 8C45 20 45 28 32 32 19 28 19 20 32 8ZM32 56C45 44 45 36 32 32 19 36 19 44 32 56Z" fill="none" stroke="#b7a69b" stroke-width="1.5" opacity=".34"/><circle cx="32" cy="32" r="3" fill="#c9b6a7" opacity=".45"/></pattern></defs><rect width="512" height="512" fill="#d0c4b7"/><rect width="512" height="512" fill="url(#m)"/></svg>

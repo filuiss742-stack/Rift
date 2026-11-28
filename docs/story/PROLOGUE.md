@@ -1,30 +1,21 @@
-# Prologue — first playable draft
+# Пролог — исходная постановка
 
-## Canonical sequence
-1. The heroine is shown in a black void.
-2. A thin white fracture appears; red distortion pushes through it.
-3. A flash cuts to Lisa waking in her ordinary modern-world bedroom.
-4. The player can inspect the phone, mirror and window.
-5. Lisa goes to bed.
-6. She wakes in the unfamiliar fantasy world, in Mira's body. The prologue ends before explaining the possession/sleeping-body mystery.
+## Каноническая последовательность
+1. Героиня находится в тёмной пустоте.
+2. Появляется тонкая белая трещина; из неё прорывается кроваво-красное искажение.
+3. Вспышка переносит Лизу в её обычную спальню современного мира.
+4. Игрок осматривает телефон, зеркало и окно.
+5. Лиза ложится спать.
+6. Она просыпается в постапокалиптическом фэнтези-мире в теле Миры. Причина происходящего пока не объясняется.
 
-The modern-world sequence is intentionally ordinary. It should make the transition feel wrong by contrast, not explain the mystery too early.
+Обыденность современного мира нужна для контраста с последующим пробуждением. Не раскрывать слияние Теи с Лизой в прологе.
 
-## Current implementation
-- The sequence is implemented in `scripts/prologue/prologue.gd`.
-- `scenes/main.tscn` launches the sequence.
-- The bedroom and ruined fantasy clearing are built from primitive 3D meshes at runtime.
-- The protagonist is a procedural silhouette placeholder only. It is not final character art.
-- Dialogue advances with a button. The bedroom supports keyboard movement (WASD), E/Space interaction and on-screen directional controls.
+## Что перенесено в текущую сборку
+- Этап `earth_room` реализует современную комнату и взаимодействия с дневником/кроватью.
+- В диалогах предусмотрены сцены сна и пробуждения в мире Миры.
+- Исходная отдельная сцена пустоты из раннего прототипа пока не подключена к основному запуску.
 
-## Known limitations / next production passes
-- No final Lisa/Mira sprite art, portraits, facial expressions or directional animation yet.
-- No final textures, sound design, music, voice acting, cinematic camera animation or save system yet.
-- Current room is a greybox, not final environment art.
-- The mirror moment is atmospheric text only; no reflection rendering yet.
-- The first fantasy awakening is a short scene, not the complete second-world level.
-- Touch controls need physical-device usability testing.
-- Run the Godot headless CI check and fix all parser/runtime errors before extending this scene.
-
-## Art pipeline requirement
-Create and inspect every character pose as an individual image. Only approved frames may be assembled into a sprite atlas. Do not ask an image model to generate a multi-pose sheet in one pass.
+## Оставшиеся ограничения
+- Спальня и руины — процедурный greybox из примитивов.
+- SVG Лизы — первые статичные направления, не финальный арт.
+- Нет финальных портретов, мимики, озвучки, музыки и кинематографических переходов.

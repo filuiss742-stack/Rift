@@ -1,46 +1,35 @@
-# Rift
+# Искажение: Нулевая грань
 
-A story-driven action game built with **Godot 4.7.2 (stable)**.
+2.5D action-RPG на **Godot 4.7.2 Standard / GDScript**: 3D-мир, 2D-персонажи и сущности, бой в реальном времени, сюжетные этапы и отдельная RTS-битва.
 
-## Project direction
+## Состав текущей сборки
+- Процедурные 3D-уровни, здания, препятствия и предметы.
+- 2D billboard-спрайты с покадровыми PNG-атласами для героев и врагов.
+- Боевая система: трёхударное комбо, уворот, идеальный уворот, навыки, энергия, Искажение, боссы и предупреждения атак.
+- Сюжетные диалоги, интерактивные объекты, этапы и сохранения.
+- RTS: добыча ресурсов, строительство, найм, выделение групп, приказы, волны врагов и мини-карта.
+- Перенесённые SVG-направления Лизы и текстуры из раннего Rift.
+- Сенсорное RPG-управление на Android. RTS пока требует мышь/клавиатуру.
 
-- 3D environments, architecture, props, lighting and collision.
-- 2D characters, creatures and entities using directional sprite sets.
-- Sprite frames are created and reviewed individually before being assembled into animation atlases.
-- Real-time action combat, dodge windows, enemy telegraphs and abilities.
-- Narrative dialogue with choices and persistent consequences.
-- A separate strategy/RTS mode later in the project.
+## Запуск
+1. Установи Godot **4.7.2 Standard** (не .NET).
+2. В Project Manager выбери Import и укажи `project.godot`.
+3. Дождись импорта ресурсов и нажми F5.
+4. В меню выбери «Новая игра» или «Тест RTS-битвы».
 
-## Playable prologue draft
+## Управление
+- RPG на ПК: WASD/стрелки — движение; ЛКМ/J — атака; Space/ПКМ — уворот; Q/E/R — навыки; 1/H — зелье; F — взаимодействие.
+- RPG на Android: экранные кнопки движения, взаимодействия, атаки, уворота, навыков и зелья.
+- RTS: клавиатура и мышь; подробности в `docs/02_install_controls.md`.
 
-The current entry scene runs the opening void, Lisa's modern bedroom exploration, and the first awakening in the fantasy world.
+## Документация
+- `docs/01_story_design.md` — сюжет и механики.
+- `docs/02_install_controls.md` — запуск и управление.
+- `docs/03_files.md` — структура и добавление контента.
+- `docs/04_chatgpt.md` — рабочие правила для ChatGPT.
+- `docs/05_roadmap.md` — дальнейшая разработка.
+- `docs/INTEGRATION_NOTES.md` — что перенесено и какие расхождения остались.
+- `docs/ART_ASSETS.md` — арт-пайплайн.
 
-- Desktop: WASD to move; E or Space to interact.
-- Android layout: four directional icon buttons and a separate interaction icon.
-- See [prologue notes](docs/story/PROLOGUE.md) and [art asset notes](docs/ART_ASSETS.md).
-
-## First art pass
-
-The first authored art pass includes repeating SVG materials for the bedroom floor, wallpaper, rug, ruined masonry and ash ground, plus individual Lisa front/back/side idle sprite images. These are editable source files, not flattened multi-pose sheets.
-
-## Open the project
-
-1. Install Godot **4.7.2 Standard** (not .NET; the project uses GDScript).
-2. In Godot Project Manager, choose **Import**.
-3. Select this repository's `project.godot`.
-4. Run the project (F6/F5).
-
-Official download: https://godotengine.org/download/archive/4.7.2-stable/
-
-## Structure
-
-- `scenes/` — Godot scenes.
-- `scripts/` — GDScript gameplay and systems.
-- `assets/` — source art, textures, audio and other game assets.
-- `docs/` — design, architecture and production notes.
-
-Keep gameplay systems small and explicit. Prefer composition over giant manager scripts. Do not add engine code: Godot is the engine.
-
-## Validation
-
-GitHub Actions runs Godot headless import and project startup checks on pushes and pull requests. Android and Windows export builds and real-device testing are not configured yet.
+## Статус проверки
+Статический скрипт `python tools/check_project.py` проверяет JSON, ссылки на ресурсы и базовую структуру. В среде подготовки Godot не установлен, поэтому импорт, парсер GDScript, игровой запуск, Android APK и Windows EXE здесь не подтверждены. Не считать эту сборку релизной.
